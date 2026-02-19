@@ -3,6 +3,8 @@
 A fully agentic RAG application for natural-language data analysis on BigQuery.
 The LLM autonomously decides which tools to call, retrieves only the relevant schema chunks via vector search, corrects its own SQL errors, and streams a narrative answer — no hard-coded pipelines.
 
+Built and tested as a PoC on the **Iowa Liquor Sales** BigQuery public dataset (`bigquery-public-data.iowa_liquor_sales`).
+
 ---
 
 ## Architecture
@@ -88,6 +90,26 @@ agentic-rag/
 ├── docker-compose.yml        # PostgreSQL + pgvector
 └── .env                      # Secrets (never commit)
 ```
+
+---
+
+## Dataset — Iowa Liquor Sales (BigQuery Public Data)
+
+This PoC uses the [Iowa Liquor Sales](https://console.cloud.google.com/marketplace/product/iowa-department-of-commerce/iowa-liquor-sales) public dataset available free on BigQuery:
+
+| Detail | Value |
+|---|---|
+| **BigQuery table** | `bigquery-public-data.iowa_liquor_sales.iowa_liquor_sales` |
+| **Rows** | ~27 million invoices |
+| **Period** | 2012 – present |
+| **Key columns** | `store_name`, `city`, `county`, `category_name`, `item_description`, `vendor_name`, `bottles_sold`, `sale_dollars`, `state_bottle_cost`, `state_bottle_retail` |
+
+No setup needed for the data — it's a free public dataset accessible to any GCP project with BigQuery enabled.
+
+The agent indexes the table schema automatically at startup (34 vector chunks), so you can immediately ask questions like:
+- *"Which counties had the highest whiskey sales in 2023?"*
+- *"Show monthly revenue trends as a line chart"*
+- *"What's the average profit margin by category?"*
 
 ---
 
