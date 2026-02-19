@@ -5,6 +5,8 @@ The LLM autonomously decides which tools to call, retrieves only the relevant sc
 
 Built and tested as a PoC on the **Iowa Liquor Sales** BigQuery public dataset (`bigquery-public-data.iowa_liquor_sales`).
 
+![Demo](assets/demo.gif)
+
 ---
 
 ## Architecture
