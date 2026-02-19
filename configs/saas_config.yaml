@@ -1,0 +1,78 @@
+# Example Client Configuration - SaaS Business
+
+client_name: "SaaS Metrics Dashboard"
+
+# Data Source Configuration
+data_source:
+  type: "bigquery"
+  project_id: "my-saas-project"
+  dataset_id: "metrics"
+  tables:
+    - "users"
+    - "subscriptions"
+    - "usage_events"
+    - "payments"
+    - "support_tickets"
+
+# Business Calculations (SaaS-specific)
+business_calculations:
+  - name: "monthly_recurring_revenue"
+    description: "Calculate Monthly Recurring Revenue (MRR)"
+    formula: "active_subscriptions * average_subscription_price"
+    parameters:
+      - "active_subscriptions"
+      - "average_subscription_price"
+    output_format: "currency"
+  
+  - name: "customer_acquisition_cost"
+    description: "Calculate Customer Acquisition Cost (CAC)"
+    formula: "total_marketing_spend / new_customers"
+    parameters:
+      - "total_marketing_spend"
+      - "new_customers"
+    output_format: "currency"
+  
+  - name: "ltv_cac_ratio"
+    description: "Calculate LTV to CAC ratio"
+    formula: "lifetime_value / customer_acquisition_cost"
+    parameters:
+      - "lifetime_value"
+      - "customer_acquisition_cost"
+    output_format: "ratio"
+  
+  - name: "net_revenue_retention"
+    description: "Calculate Net Revenue Retention (NRR)"
+    formula: "((starting_mrr + expansion - contraction - churn) / starting_mrr) * 100"
+    parameters:
+      - "starting_mrr"
+      - "expansion"
+      - "contraction"
+      - "churn"
+    output_format: "percentage"
+  
+  - name: "annual_run_rate"
+    description: "Calculate Annual Run Rate (ARR)"
+    formula: "monthly_recurring_revenue * 12"
+    parameters:
+      - "monthly_recurring_revenue"
+    output_format: "currency"
+
+# Visualization Configuration
+visualization:
+  default_chart_type: "line"
+  color_scheme: "plotly"
+  enable_interactive: true
+
+# Custom Instructions
+custom_instructions: |
+  When analyzing SaaS metrics:
+  - Focus on subscription health and growth
+  - Track user engagement and feature adoption
+  - Monitor churn indicators and retention metrics
+  - Provide insights on revenue optimization
+
+# Domain Context
+domain_context: |
+  This is a SaaS (Software as a Service) business with subscription-based revenue.
+  Key metrics include MRR, ARR, CAC, LTV, churn rate, and user engagement.
+  The business offers multiple pricing tiers and tracks feature usage.

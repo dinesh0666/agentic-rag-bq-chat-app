@@ -1,0 +1,76 @@
+# Iowa Liquor Sales Analytics Configuration
+
+client_name: "Iowa Liquor Sales Analytics"
+
+# Data Source Configuration
+data_source:
+  type: "bigquery"
+  project_id: "my-assistant-1744983550940"
+  dataset_id: "iowa_liquor_sales"
+  tables:
+    - "sales"
+
+# Business Calculations (Iowa Liquor Sales specific)
+business_calculations:
+  - name: "profit_margin"
+    description: "Calculate profit margin percentage"
+    formula: "((sale_dollars - state_bottle_cost) / sale_dollars) * 100"
+    parameters:
+      - "sale_dollars"
+      - "state_bottle_cost"
+    output_format: "percentage"
+  
+  - name: "average_bottle_price"
+    description: "Calculate average price per bottle"
+    formula: "sale_dollars / bottles_sold"
+    parameters:
+      - "sale_dollars"
+      - "bottles_sold"
+    output_format: "currency"
+  
+  - name: "volume_per_transaction"
+    description: "Calculate average volume per transaction in liters"
+    formula: "volume_sold_liters / total_transactions"
+    parameters:
+      - "volume_sold_liters"
+      - "total_transactions"
+    output_format: "number"
+  
+  - name: "sales_growth"
+    description: "Calculate sales growth rate"
+    formula: "((current_sales - previous_sales) / previous_sales) * 100"
+    parameters:
+      - "current_sales"
+      - "previous_sales"
+    output_format: "percentage"
+  
+  - name: "markup_percentage"
+    description: "Calculate markup on state bottle cost"
+    formula: "((sale_dollars - state_bottle_cost) / state_bottle_cost) * 100"
+    parameters:
+      - "sale_dollars"
+      - "state_bottle_cost"
+    output_format: "percentage"
+
+# Visualization Configuration
+visualization:
+  default_chart_type: "bar"
+  color_scheme: "plotly"
+  enable_interactive: true
+
+# Custom Instructions for the Agent
+custom_instructions: |
+  When analyzing Iowa liquor sales data:
+  - Focus on sales trends across different store types and locations
+  - Analyze popular liquor categories and brands
+  - Identify seasonal patterns and peak sales periods
+  - Look for geographical distribution patterns across Iowa counties
+  - Consider volume (liters) vs. revenue analysis
+
+# Domain Context
+domain_context: |
+  This dataset contains wholesale liquor purchases in Iowa since 2012.
+  Iowa controls wholesale distribution, so this is complete retail liquor data.
+  Key fields: store info, location (city/county), liquor details (category, vendor, item),
+  sale metrics (bottles sold, sale dollars, volume in liters, state bottle cost).
+  Useful for demand forecasting, stockout prediction, and supply chain analysis.

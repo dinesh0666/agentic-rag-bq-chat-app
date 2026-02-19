@@ -1,0 +1,38 @@
+# LLM and RAG
+langchain>=0.1.0
+langchain-google-genai>=1.0.0
+langchain-community>=0.0.20
+langgraph>=0.0.30
+openai>=1.0.0  # For OpenRouter compatibility
+google-generativeai>=0.3.0
+
+# Database
+google-cloud-bigquery>=3.11.0
+google-cloud-bigquery-storage>=2.22.0
+db-dtypes>=1.1.1
+psycopg2-binary>=2.9.9
+pgvector>=0.2.4
+
+# Vector Store and Embeddings
+chromadb>=0.4.22
+sentence-transformers>=2.2.2
+faiss-cpu>=1.7.4
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# Visualization
+plotly>=5.18.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Web Interface
+streamlit>=1.29.0
+streamlit-chat>=0.1.1
+
+# Utilities
+tenacity>=8.2.3
+pydantic>=2.0.0

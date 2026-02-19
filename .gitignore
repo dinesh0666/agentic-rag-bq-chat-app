@@ -1,0 +1,36 @@
+# Environment
+.env
+*.pyc
+__pycache__/
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data
+*.db
+*.sqlite
+chroma_db/
+data/
+*.csv
+*.json
+!configs/*.json
+
+# Credentials
+*.json
+!configs/example_*.json
+*credentials*.json
+service-account*.json
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

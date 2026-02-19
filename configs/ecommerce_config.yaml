@@ -1,0 +1,77 @@
+# Example Client Configuration - E-commerce Business
+
+client_name: "E-commerce Analytics"
+
+# Data Source Configuration
+data_source:
+  type: "bigquery"
+  project_id: "my-ecommerce-project"
+  dataset_id: "analytics"
+  tables:
+    - "customers"
+    - "orders"
+    - "products"
+    - "transactions"
+
+# Business Calculations (Dynamic - Can be customized per client)
+business_calculations:
+  - name: "customer_lifetime_value"
+    description: "Calculate the lifetime value of a customer"
+    formula: "total_revenue / total_customers * avg_customer_lifespan"
+    parameters:
+      - "total_revenue"
+      - "total_customers"
+      - "avg_customer_lifespan"
+    output_format: "currency"
+  
+  - name: "average_order_value"
+    description: "Calculate average order value"
+    formula: "total_revenue / total_orders"
+    parameters:
+      - "total_revenue"
+      - "total_orders"
+    output_format: "currency"
+  
+  - name: "customer_churn_rate"
+    description: "Calculate customer churn rate"
+    formula: "(churned_customers / total_customers) * 100"
+    parameters:
+      - "churned_customers"
+      - "total_customers"
+    output_format: "percentage"
+  
+  - name: "revenue_growth_rate"
+    description: "Calculate revenue growth rate"
+    formula: "((current_revenue - previous_revenue) / previous_revenue) * 100"
+    parameters:
+      - "current_revenue"
+      - "previous_revenue"
+    output_format: "percentage"
+  
+  - name: "inventory_turnover"
+    description: "Calculate inventory turnover ratio"
+    formula: "cost_of_goods_sold / average_inventory"
+    parameters:
+      - "cost_of_goods_sold"
+      - "average_inventory"
+    output_format: "ratio"
+
+# Visualization Configuration
+visualization:
+  default_chart_type: "bar"
+  color_scheme: "plotly"
+  enable_interactive: true
+
+# Custom Instructions for the Agent
+custom_instructions: |
+  When analyzing e-commerce data:
+  - Focus on customer behavior and purchasing patterns
+  - Highlight trends in product performance
+  - Identify seasonal variations in sales
+  - Suggest actionable insights for business growth
+
+# Domain Context
+domain_context: |
+  This is an e-commerce business that sells products online.
+  Key metrics include revenue, order volume, customer acquisition, and retention.
+  The business operates in multiple product categories and ships to various regions.

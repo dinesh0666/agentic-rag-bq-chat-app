@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector for chat history storage
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: agentic-rag-postgres
+    environment:
+      POSTGRES_DB: agentic_rag
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - agentic-rag-network
+
+  agentic-rag:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agentic-rag-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8501:8501"
+    environment:
+      # LLM Configuration
+      - LLM_PROVIDER=${LLM_PROVIDER:-gemini}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      
+      # BigQuery Configuration
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/service-account.json
+      - BIGQUERY_PROJECT_ID=${BIGQUERY_PROJECT_ID}
+      - BIGQUERY_DATASET=${BIGQUERY_DATASET}
+      
+      # PostgreSQL Configuration
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=agentic_rag
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      
+      # Application Settings
+      - CONFIG_PATH=/app/configs/client_config.yaml
+      - DEBUG_MODE=${DEBUG_MODE:-false}
+      - CHROMA_PERSIST_DIRECTORY=/app/chroma_db
+    
+    volumes:
+      # Mount configuration directory
+      - ./configs:/app/configs:ro
+      
+      # Mount vector store (persistent)
+      - chroma-data:/app/chroma_db
+      
+      # Mount logs directory
+      - ./logs:/app/logs
+      
+      # Mount service account key (if using local file)
+      - ${GOOGLE_APPLICATION_CREDENTIALS:-./service-account.json}:/app/service-account.json:ro
+    
+    env_file:
+      - .env
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    networks:
+      - agentic-rag-network
+
+volumes:
+  chroma-data:
+    driver: local
+  postgres-data:
+    driver: local
+
+networks:
+  agentic-rag-network:
+    driver: bridge
